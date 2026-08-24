@@ -28,7 +28,7 @@ export function Reveal({
 }
 
 const wordVariants: Variants = {
-  hidden: { opacity: 0, y: "0.6em" },
+  hidden: { opacity: 0, y: "0.35em" },
   show: (i: number) => ({
     opacity: 1,
     y: 0,
@@ -54,7 +54,7 @@ export function TextReveal({
         const clean = word.replace(/[.,—]/g, "").toLowerCase();
         const isItalic = italicWords.some((w) => w.toLowerCase() === clean);
         return (
-          <span key={`${word}-${i}`} className="inline-block overflow-hidden align-bottom">
+          <span key={`${word}-${i}`} className="inline-block align-bottom">
             <motion.span
               className={
                 isItalic ? "font-serif-editorial inline-block italic font-normal" : "inline-block"
