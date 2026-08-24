@@ -23,6 +23,11 @@ import bestieImg from "@/assets/bestie.jpg";
 import familyImg from "@/assets/family.jpg";
 import wisudaImg from "@/assets/wisuda.jpg";
 import brandingImg from "@/assets/branding.jpg";
+import gal1Img from "@/assets/gal-1.jpg";
+import gal2Img from "@/assets/gal-2.jpg";
+import gal3Img from "@/assets/gal-3.jpg";
+import gal4Img from "@/assets/gal-4.jpg";
+import gal5Img from "@/assets/gal-5.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -1007,7 +1012,7 @@ function Booking() {
                   <select
                     name="paket"
                     className={field}
-                    defaultValue={`${paket[0].nama} — ${paket[0].harga}`}
+                    defaultValue={`${paket[0]?.nama} — ${paket[0]?.harga}`}
                   >
                     {paket.map((p) => (
                       <option key={p.nama}>{`${p.nama} — ${p.harga}`}</option>
