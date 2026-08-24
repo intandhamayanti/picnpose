@@ -57,7 +57,7 @@ export function TextReveal({
           <span key={`${word}-${i}`} className="inline-block align-bottom">
             <motion.span
               className={
-                isItalic ? "font-serif-editorial inline-block italic font-normal" : "inline-block"
+                isItalic ? "font-serif-editorial inline-block pr-[0.08em] italic font-normal" : "inline-block"
               }
               custom={i + delay * 10}
               variants={wordVariants}
