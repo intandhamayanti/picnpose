@@ -297,19 +297,24 @@ function Header() {
 
 function Hero() {
   return (
-    <section id="top" className="relative overflow-hidden pt-20 md:pt-28">
+    <section id="top" className="relative overflow-hidden pt-24 pb-14 md:pt-32 md:pb-20">
       <div className="mx-auto max-w-[1400px] px-5 md:px-10">
-        <div className="grid items-end gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12">
-          <div className="pt-4 pb-2 md:pt-6">
-            <h1 className="display text-[15vw] leading-[0.92] sm:text-[10vw] lg:text-[7vw]">
-              <TextReveal text="Cerita kamu," />
+        <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
+          <div className="order-2 lg:order-1">
+            <Reveal delay={0.05}>
+              <p className="mb-5 text-[10px] tracking-[0.24em] text-muted-foreground uppercase md:mb-7">
+                Self Photo Studio · Surabaya
+              </p>
+            </Reveal>
+            <h1 className="display text-[14vw] leading-[0.95] sm:text-[9.5vw] lg:text-[6.4vw]">
+              <TextReveal text="Bebas berekspresi," />
               <br />
-              <TextReveal text="ditangkap sendiri." italicWords={["sendiri."]} delay={0.2} />
+              <TextReveal text="tanpa penonton." italicWords={["penonton."]} delay={0.2} />
             </h1>
             <Reveal delay={0.35}>
               <p className="mt-6 max-w-md text-sm leading-relaxed text-muted-foreground md:mt-7 md:text-base">
-                Self photo studio di Surabaya. Ruangan private, remote di tangan kamu, dan 20 menit
-                penuh untuk jadi versi paling kamu — tanpa ada orang lain yang mengarahkan.
+                Ruangan private, lighting siap pakai, remote di tangan kamu. Dua puluh menit penuh
+                untuk jadi versi paling kamu — tanpa ada yang mengarahkan.
               </p>
             </Reveal>
             <Reveal delay={0.45}>
@@ -330,7 +335,7 @@ function Hero() {
               </div>
             </Reveal>
             <Reveal delay={0.55}>
-              <dl className="mt-10 grid grid-cols-3 gap-4 border-t border-border pt-6">
+              <dl className="mt-9 grid grid-cols-3 gap-4 border-t border-border pt-6">
                 {[
                   ["20", "menit / sesi"],
                   ["9", "background pilihan"],
@@ -351,16 +356,16 @@ function Hero() {
             initial={{ opacity: 0, scale: 1.06 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
-            className="grain relative aspect-[4/5] w-full overflow-hidden bg-muted lg:aspect-[3/4]"
+            className="grain relative order-1 aspect-[4/3] w-full overflow-hidden bg-muted sm:aspect-[3/2] lg:order-2 lg:aspect-[4/5]"
           >
             <img
               src={heroImg}
               alt="Potret editorial berwarna di self photo studio Surabaya"
               width={1152}
               height={1472}
-              className="h-full w-full object-cover"
+              className="h-full w-full object-cover object-top"
             />
-            <div className="absolute inset-x-0 bottom-0 flex items-end justify-between p-5 text-[10px] tracking-[0.18em] text-white/85 uppercase">
+            <div className="absolute inset-x-0 bottom-0 flex items-end justify-between bg-gradient-to-t from-black/45 to-transparent p-5 text-[10px] tracking-[0.18em] text-white/85 uppercase">
               <span>No. 01 / {BRAND}</span>
               <span>Surabaya</span>
             </div>
@@ -370,6 +375,7 @@ function Hero() {
     </section>
   );
 }
+
 
 function Statement() {
   return (
