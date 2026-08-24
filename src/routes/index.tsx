@@ -56,6 +56,15 @@ export const Route = createFileRoute("/")({
 const WA = "https://wa.me/6281234567890";
 const BRAND = "Pic n Pose Studio";
 
+function TikTokIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden className={className}>
+      <path d="M16.5 3c.32 2.29 1.7 3.7 3.94 3.85v2.6c-1.3.13-2.44-.3-3.76-1.1v4.86c0 6.18-6.74 8.1-9.45 3.67-1.74-2.85-.67-7.86 4.92-8.06v2.74c-.43.07-.88.18-1.3.32-1.24.42-1.94 1.2-1.74 2.59.37 2.65 5.24 3.44 4.83-1.74V3.01h2.56Z" />
+    </svg>
+  );
+}
+
+
 const nav = [
   { label: "Kenapa Di Sini", href: "#kenapa" },
   { label: "Jenis Sesi", href: "#sesi" },
