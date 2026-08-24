@@ -414,9 +414,9 @@ function Kenapa() {
   return (
     <section id="kenapa" className="py-20 md:py-32">
       <div className="mx-auto max-w-[1400px] px-5 md:px-10">
-        <div className="grid gap-14 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
+        <div className="grid items-end gap-8 lg:grid-cols-[1fr_auto] lg:gap-16">
           <div>
-            <p className="mb-8 text-[10px] tracking-[0.24em] text-muted-foreground uppercase">
+            <p className="mb-6 text-[10px] tracking-[0.24em] text-muted-foreground uppercase">
               (Kenapa di sini)
             </p>
             <h2 className="display text-[12vw] leading-[0.98] sm:text-[8vw] lg:text-[4.8vw]">
@@ -424,42 +424,50 @@ function Kenapa() {
               <br />
               <TextReveal text="terasa berbeda." italicWords={["berbeda."]} delay={0.1} />
             </h2>
-            <Parallax className="mt-10 hidden overflow-hidden lg:block" distance={40}>
-              <div className="grain aspect-[7/5] overflow-hidden bg-muted">
-                <img
-                  src={studioImg}
-                  alt="Interior private room self photo studio dengan lighting"
-                  loading="lazy"
-                  width={1408}
-                  height={1024}
-                  className="h-[115%] w-full object-cover"
-                />
-              </div>
-            </Parallax>
           </div>
+          <Reveal delay={0.2}>
+            <p className="max-w-sm text-sm leading-relaxed text-muted-foreground">
+              Semua detail kecil sudah kami siapkan, supaya kamu tinggal masuk, menekan remote, dan
+              menikmati sesinya.
+            </p>
+          </Reveal>
+        </div>
 
-          <ul className="divide-y divide-border border-y border-border">
-            {alasan.map((a, i) => (
-              <Reveal key={a.t} delay={i * 0.06}>
-                <li className="group grid grid-cols-[auto_minmax(0,1fr)] items-start gap-5 py-7 transition-colors duration-500 md:grid-cols-[auto_0.8fr_1.2fr] md:items-center">
-                  <span className="text-[10px] tracking-[0.2em] text-muted-foreground tabular-nums">
-                    0{i + 1}
-                  </span>
+        <Parallax className="mt-12 hidden overflow-hidden lg:block" distance={40}>
+          <div className="grain aspect-[21/8] overflow-hidden bg-muted">
+            <img
+              src={studioImg}
+              alt="Interior private room self photo studio dengan lighting"
+              loading="lazy"
+              width={1408}
+              height={1024}
+              className="h-[115%] w-full object-cover"
+            />
+          </div>
+        </Parallax>
+
+        <ul className="mt-12 grid gap-px border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
+          {alasan.map((a, i) => (
+            <Reveal key={a.t} delay={(i % 3) * 0.08} className="h-full">
+              <li className="group flex h-full min-h-[15rem] flex-col bg-background p-7 transition-colors duration-500 hover:bg-secondary md:min-h-[16rem] md:p-9">
+                <span className="text-[10px] tracking-[0.2em] text-muted-foreground tabular-nums">
+                  0{i + 1}
+                </span>
+                <div className="mt-auto pt-10">
                   <h3 className="display text-2xl transition-transform duration-500 group-hover:translate-x-1 md:text-3xl">
                     {a.t}
                   </h3>
-                  <p className="col-start-2 text-sm leading-relaxed text-muted-foreground md:col-start-3">
-                    {a.d}
-                  </p>
-                </li>
-              </Reveal>
-            ))}
-          </ul>
-        </div>
+                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{a.d}</p>
+                </div>
+              </li>
+            </Reveal>
+          ))}
+        </ul>
       </div>
     </section>
   );
 }
+
 
 function JenisSesi() {
   return (
