@@ -859,6 +859,33 @@ function buildSlots() {
 }
 const SLOTS = buildSlots();
 
+const SESI_GROUP = [
+  { label: "Pagi", range: [10, 13] as const },
+  { label: "Siang", range: [13, 17] as const },
+  { label: "Malam", range: [17, 21] as const },
+];
+
+const slotHour = (s: string) => Number(s.split(".")[0]);
+const slotMinutes = (s: string) => {
+  const [h, m] = s.split(".");
+  return Number(h) * 60 + Number(m);
+};
+
+const isSameDay = (a: Date, b: Date) => a.toDateString() === b.toDateString();
+const isWeekend = (d: Date) => [0, 5, 6].includes(d.getDay()); // Jumat–Minggu
+
+/** Slot terisi (simulasi jadwal studio, konsisten per tanggal). */
+function bookedSlots(d: Date) {
+  const seed = d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
+  const set = new Set<string>();
+  SLOTS.forEach((s, i) => {
+    const n = (seed * 9301 + (i + 1) * 49297) % 233280;
+    if (n / 233280 < (isWeekend(d) ? 0.42 : 0.22)) set.add(s);
+  });
+  return set;
+}
+
+
 function Booking() {
   const today = useMemo(() => {
     const d = new Date();
