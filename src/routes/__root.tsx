@@ -77,14 +77,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "RUANG — Self Photo Studio Surabaya" },
+      { title: "Pic n Pose Studio — Self Photo Studio Surabaya" },
       {
         name: "description",
         content:
           "Self photo studio premium di Surabaya. Sesi 20 menit, private room, pencahayaan estetik, hasil editorial.",
       },
-      { name: "author", content: "RUANG Studio" },
-      { property: "og:title", content: "RUANG — Self Photo Studio Surabaya" },
+      { name: "author", content: "Pic n Pose Studio" },
+      { property: "og:title", content: "Pic n Pose Studio — Self Photo Studio Surabaya" },
       {
         property: "og:description",
         content: "Foto sendiri di private studio. 20 menit, hasil premium, proses gampang.",
@@ -103,10 +103,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Instrument+Serif:ital@0;1&display=swap",
       },
     ],
   }),
+
   shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,

@@ -1,7 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState, type FormEvent } from "react";
-import { motion } from "motion/react";
-import { ArrowUpRight, Instagram, MapPin, Minus, Plus } from "lucide-react";
+import { useMemo, useState, type FormEvent } from "react";
+import { motion, AnimatePresence } from "motion/react";
+import {
+  ArrowUpRight,
+  ChevronLeft,
+  ChevronRight,
+  Instagram,
+  MapPin,
+  Menu,
+  Minus,
+  Plus,
+  X,
+} from "lucide-react";
 
 import { Reveal, TextReveal, Parallax } from "@/components/reveal";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -17,17 +27,17 @@ import brandingImg from "@/assets/branding.jpg";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "RUANG — Self Photo Studio Surabaya | Sesi 20 Menit" },
+      { title: "Pic n Pose Studio — Self Photo Studio Surabaya | Sesi 20 Menit" },
       {
         name: "description",
         content:
-          "Self photo studio premium di Surabaya. Private room, pencahayaan estetik, sesi 20 menit, hasil editorial. Cocok untuk solo, couple, bestie, keluarga, dan wisuda.",
+          "Self photo studio di Surabaya. Private room, lighting estetik, sesi 20 menit, hasil berwarna & editorial. Booking pilih tanggal dan jam sendiri.",
       },
-      { property: "og:title", content: "RUANG — Self Photo Studio Surabaya" },
+      { property: "og:title", content: "Pic n Pose Studio — Self Photo Studio Surabaya" },
       {
         property: "og:description",
         content:
-          "Foto sendiri di private studio Surabaya. 20 menit, hasil premium, mulai Rp99.000.",
+          "Foto sendiri di private studio Surabaya. Sesi 20 menit, hasil premium, mulai Rp89.000.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -37,6 +47,7 @@ export const Route = createFileRoute("/")({
 });
 
 const WA = "https://wa.me/6281234567890";
+const BRAND = "Pic n Pose Studio";
 
 const nav = [
   { label: "Kenapa Di Sini", href: "#kenapa" },
@@ -55,59 +66,103 @@ const sesi = [
   { no: "06", nama: "Personal Branding", ket: "Wajah profesional kamu, versi paling meyakinkan.", img: brandingImg },
 ];
 
-const paket = [
+type Paket = {
+  nama: string;
+  hari: string;
+  harga: string;
+  orang: string;
+  durasi: string;
+  fitur: string[];
+  unggulan?: boolean;
+};
+
+const paket: Paket[] = [
   {
-    nama: "Paket Solo",
-    harga: "Rp99.000",
-    orang: "1 orang",
-    fitur: ["20 menit sesi", "2 foto edit", "Semua softcopy", "Opsi cetak 4R", "Private room"],
+    nama: "Basic Self Photo",
+    hari: "Weekdays · Senin – Kamis",
+    harga: "Rp89.000",
+    orang: "Gratis 1 – 5 orang",
+    durasi: "20 menit sesi",
+    fitur: [
+      "20 menit photoshoot",
+      "5 menit pemilihan foto",
+      "Free 2 cetak 4R",
+      "Free semua file (black & white)",
+      "Free props & properti studio",
+      "Private room, remote di tangan kamu",
+    ],
   },
   {
-    nama: "Paket Couple / Duo",
-    harga: "Rp149.000",
-    orang: "Maks. 2 orang",
-    fitur: ["20 menit sesi", "4 foto edit", "Semua softcopy", "2 cetak 4R gratis", "Private room"],
+    nama: "Weekend Self Photo",
+    hari: "Weekend · Jumat – Minggu",
+    harga: "Rp119.000",
+    orang: "Gratis 1 – 5 orang",
+    durasi: "20 menit sesi",
+    fitur: [
+      "20 menit photoshoot",
+      "5 menit pemilihan foto",
+      "Free 3 cetak 4R",
+      "Free semua file (black & white)",
+      "Free props & 1 kostum",
+      "Prioritas slot jam ramai",
+    ],
     unggulan: true,
   },
   {
-    nama: "Paket Group",
-    harga: "Rp199.000",
-    orang: "Maks. 6 orang",
-    fitur: ["20 menit sesi", "6 foto edit", "Semua softcopy", "4 cetak 4R gratis", "Private room luas"],
+    nama: "Group / Wisuda",
+    hari: "Setiap hari",
+    harga: "Rp179.000",
+    orang: "Gratis 1 – 8 orang",
+    durasi: "30 menit sesi",
+    fitur: [
+      "30 menit photoshoot",
+      "10 menit pemilihan foto",
+      "Free 5 cetak 4R",
+      "Free semua file (black & white)",
+      "Background khusus wisuda / adat",
+      "Private room lebih luas",
+    ],
   },
+];
+
+const tambahan = [
+  { t: "Tambah orang", d: "Per orang dalam satu sesi", h: "Rp15.000" },
+  { t: "Onesie / kostum", d: "Per kostum per sesi", h: "Rp15.000" },
+  { t: "Properti studio", d: "Kursi, cermin, bunga, papan", h: "Gratis" },
+  { t: "Cetak tambahan", d: "Per 1 lembar cetak 4R", h: "Rp10.000" },
+  { t: "Semua file berwarna", d: "Softcopy full color, tanpa watermark", h: "Rp20.000" },
+  { t: "Retouch premium", d: "5 foto edit detail, dikirim H+2", h: "Rp50.000" },
+];
+
+const catatan = [
+  "Lebih dari 5 orang tetap kena biaya tambahan walau tidak satu frame.",
+  "Reschedule maksimal H-1 sebelum jadwal, berlaku 1x.",
+  "Datang 10 menit lebih awal supaya durasi sesi tetap utuh.",
+  "File mentah dikirim di hari yang sama lewat Google Drive.",
 ];
 
 const testimoni = [
-  {
-    q: "Awalnya deg-degan karena baru pertama kali, ternyata gampang banget. Remote-nya tinggal pencet, 20 menit kerasa cepet tapi hasilnya banyak yang bagus.",
-    n: "Nabila",
-    d: "Bestie session, Juli",
-  },
-  {
-    q: "Ruangannya private, jadi bebas gaya tanpa malu. Editannya rapi, gak lebay, warnanya bersih.",
-    n: "Rizky & Sasa",
-    d: "Couple session, Agustus",
-  },
-  {
-    q: "Foto wisuda di sini malah lebih bagus daripada di kampus. Cepet dan gak antre lama.",
-    n: "Dimas",
-    d: "Wisuda, Juni",
-  },
+  { q: "Awalnya deg-degan karena baru pertama kali, ternyata gampang banget. Remote tinggal pencet, 20 menit kerasa cepet tapi hasilnya banyak yang bagus.", n: "Nabila", d: "Bestie session" },
+  { q: "Ruangannya private, jadi bebas gaya tanpa malu. Editannya rapi, gak lebay, warnanya bersih.", n: "Rizky & Sasa", d: "Couple session" },
+  { q: "Foto wisuda di sini malah lebih bagus daripada di kampus. Cepet dan gak antre lama.", n: "Dimas", d: "Wisuda" },
+  { q: "Bawa anak dua tetap aman, staffnya sabar dan ruangannya luas. Hasilnya dipajang di ruang tamu.", n: "Keluarga Wibowo", d: "Family session" },
+  { q: "Buat foto profil LinkedIn cuma butuh 20 menit. Lightingnya bagus banget, gak perlu fotografer.", n: "Arya", d: "Personal branding" },
+  { q: "Tempatnya bersih, wangi, dan estetik. Sekali ke sini langsung pengen balik lagi bulan depan.", n: "Talitha", d: "Solo portrait" },
 ];
 
 const faq = [
-  { q: "Satu sesi berapa menit?", a: "Setiap sesi berdurasi 20 menit di dalam ruangan. Kamu bisa ambil foto sebanyak yang kamu mau selama waktu berjalan." },
-  { q: "Maksimal berapa orang dalam satu sesi?", a: "Paket Solo untuk 1 orang, Duo maksimal 2 orang, dan Group maksimal 6 orang. Kalau lebih dari 6, hubungi kami untuk pengaturan khusus." },
-  { q: "Apakah dapat file digitalnya?", a: "Dapat. Semua hasil softcopy kami kirim tanpa watermark, plus foto edit sesuai paket." },
+  { q: "Satu sesi berapa menit?", a: "Sesi reguler 20 menit di dalam ruangan, plus 5 menit untuk memilih foto. Paket Group/Wisuda mendapat 30 menit sesi." },
+  { q: "Maksimal berapa orang dalam satu sesi?", a: "Paket Basic dan Weekend gratis untuk 1–5 orang, Group/Wisuda sampai 8 orang. Lebih dari itu ada biaya tambahan Rp15.000 per orang." },
+  { q: "Apakah dapat file digitalnya?", a: "Dapat. Semua file black & white kami kirim gratis tanpa watermark. Versi full color bisa ditambah Rp20.000." },
   { q: "Apakah bisa langsung cetak?", a: "Bisa. Cetak 4R tersedia di studio dan bisa langsung dibawa pulang setelah sesi." },
-  { q: "Apakah bisa reschedule?", a: "Bisa, maksimal H-1 sebelum jadwal sesi. Cukup kabari kami lewat WhatsApp." },
+  { q: "Apakah bisa reschedule?", a: "Bisa, maksimal H-1 sebelum jadwal sesi dan berlaku satu kali. Cukup kabari kami lewat WhatsApp." },
   { q: "Boleh bawa properti sendiri?", a: "Boleh banget. Bunga, balon, banner wisuda, boneka, sampai outfit ganti — silakan bawa." },
-  { q: "Kapan hasilnya dikirim?", a: "Softcopy mentah dikirim di hari yang sama. Foto edit maksimal 2 hari kerja lewat Google Drive." },
+  { q: "Kapan hasilnya dikirim?", a: "File mentah dikirim di hari yang sama. Retouch premium maksimal 2 hari kerja lewat Google Drive." },
 ];
 
 const langkah = [
-  { t: "Pilih paket", d: "Tentukan paket sesuai jumlah orang dan kebutuhan." },
-  { t: "Pilih jadwal", d: "Booking lewat form atau WhatsApp, pilih tanggal dan jam." },
+  { t: "Pilih paket", d: "Tentukan paket sesuai jumlah orang dan hari." },
+  { t: "Pilih jadwal", d: "Pilih tanggal, lalu slot jam per 20 menit." },
   { t: "Datang ke studio", d: "Datang 10 menit lebih awal untuk siap-siap." },
   { t: "Sesi 20 menit", d: "Ruangan jadi milik kamu. Remote di tangan, bebas berekspresi." },
   { t: "Pilih hasil", d: "Review di layar, pilih favorit, sisanya kami rapikan." },
@@ -125,7 +180,7 @@ function Index() {
         <Kenapa />
         <JenisSesi />
         <Strip />
-        <Paket />
+        <PaketSection />
         <Galeri />
         <Testimoni />
         <Cara />
@@ -137,85 +192,160 @@ function Index() {
   );
 }
 
-function Header() {
+function Wordmark({ className = "" }: { className?: string }) {
   return (
-    <header className="fixed inset-x-0 top-0 z-50 border-b border-border/50 bg-background/70 backdrop-blur-xl">
-      <div className="mx-auto grid max-w-[1400px] grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-5 py-3.5 md:px-10">
-        <a href="#top" className="min-w-0 text-lg font-black tracking-[-0.06em] uppercase">
-          Ruang<span className="font-serif-editorial italic lowercase"> studio</span>
-        </a>
-        <div className="flex items-center gap-6">
-          <nav className="hidden items-center gap-6 lg:flex">
-            {nav.map((n) => (
-              <a
-                key={n.href}
-                href={n.href}
-                className="text-[11px] font-medium tracking-[0.18em] text-muted-foreground uppercase transition-colors hover:text-foreground"
-              >
-                {n.label}
-              </a>
-            ))}
-          </nav>
-          <ThemeToggle />
-          <a
-            href="#booking"
-            className="rounded-full bg-foreground px-4 py-2 text-[11px] font-semibold tracking-[0.16em] text-background uppercase transition-transform duration-300 hover:scale-[1.04] sm:px-5"
-          >
-            Booking
+    <span className={`display leading-none ${className}`}>
+      Pic <span className="italic">n</span> Pose
+    </span>
+  );
+}
+
+function Header() {
+  const [open, setOpen] = useState(false);
+  return (
+    <>
+      <header className="fixed inset-x-0 top-0 z-50 border-b border-border/50 bg-background/70 backdrop-blur-xl">
+        <div className="mx-auto grid max-w-[1400px] grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-5 py-3 md:px-10">
+          <a href="#top" className="min-w-0 truncate">
+            <Wordmark className="text-xl md:text-2xl" />
+            <span className="ml-2 hidden text-[10px] tracking-[0.22em] text-muted-foreground uppercase sm:inline">
+              Self Photo Studio
+            </span>
           </a>
+          <div className="flex items-center gap-3 md:gap-6">
+            <nav className="hidden items-center gap-6 lg:flex">
+              {nav.map((n) => (
+                <a
+                  key={n.href}
+                  href={n.href}
+                  className="text-[11px] font-medium tracking-[0.18em] text-muted-foreground uppercase transition-colors hover:text-foreground"
+                >
+                  {n.label}
+                </a>
+              ))}
+            </nav>
+            <ThemeToggle />
+            <a
+              href="#booking"
+              className="hidden rounded-full bg-foreground px-5 py-2.5 text-[11px] font-medium tracking-[0.16em] text-background uppercase transition-transform duration-300 hover:scale-[1.04] sm:inline-flex"
+            >
+              Booking
+            </a>
+            <button
+              type="button"
+              onClick={() => setOpen(true)}
+              aria-label="Buka menu"
+              className="grid h-9 w-9 place-items-center rounded-full border border-border lg:hidden"
+            >
+              <Menu className="h-4 w-4" />
+            </button>
+          </div>
         </div>
-      </div>
-    </header>
+      </header>
+
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.35 }}
+            className="fixed inset-0 z-[60] bg-background px-5 pt-5 pb-10 lg:hidden"
+          >
+            <div className="flex items-center justify-between">
+              <Wordmark className="text-2xl" />
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                aria-label="Tutup menu"
+                className="grid h-9 w-9 place-items-center rounded-full border border-border"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+            <nav className="mt-12 flex flex-col divide-y divide-border border-y border-border">
+              {nav.map((n, i) => (
+                <motion.a
+                  key={n.href}
+                  href={n.href}
+                  onClick={() => setOpen(false)}
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.06 * i, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                  className="display py-5 text-3xl"
+                >
+                  {n.label}
+                </motion.a>
+              ))}
+            </nav>
+            <a
+              href="#booking"
+              onClick={() => setOpen(false)}
+              className="mt-10 flex items-center justify-between rounded-full bg-foreground px-7 py-4 text-xs font-medium tracking-[0.16em] text-background uppercase"
+            >
+              Booking sekarang
+              <ArrowUpRight className="h-4 w-4" />
+            </a>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
 
 function Hero() {
   return (
-    <section id="top" className="relative overflow-hidden pt-24 md:pt-28">
+    <section id="top" className="relative overflow-hidden pt-20 md:pt-28">
       <div className="mx-auto max-w-[1400px] px-5 md:px-10">
         <div className="grid items-end gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12">
-          <div className="pt-6 pb-2">
-            <Reveal>
-              <div className="mb-7 flex flex-wrap gap-2">
-                {["Surabaya, Indonesia", "20 menit sesi", "Private studio"].map((t) => (
-                  <span
-                    key={t}
-                    className="rounded-full border border-border px-3 py-1.5 text-[10px] font-medium tracking-[0.16em] text-muted-foreground uppercase"
-                  >
-                    {t}
-                  </span>
-                ))}
-              </div>
-            </Reveal>
-            <h1 className="text-[13vw] leading-[0.86] font-black tracking-[-0.055em] uppercase sm:text-[9vw] lg:text-[6.6vw]">
+          <div className="pt-4 pb-2 md:pt-6">
+            <h1 className="display text-[15vw] leading-[0.92] sm:text-[10vw] lg:text-[7vw]">
               <TextReveal text="Cerita kamu," />
               <br />
               <TextReveal text="ditangkap" italicWords={["ditangkap"]} delay={0.2} />
               <br />
-              <TextReveal text="sendiri." italicWords={[]} delay={0.4} />
+              <span className="font-sans text-[9vw] font-light tracking-[-0.03em] sm:text-[6vw] lg:text-[4.2vw]">
+                <TextReveal text="sendiri." delay={0.4} />
+              </span>
             </h1>
             <Reveal delay={0.35}>
-              <p className="mt-7 max-w-md text-sm leading-relaxed text-muted-foreground md:text-base">
+              <p className="mt-6 max-w-md text-sm leading-relaxed text-muted-foreground md:mt-7 md:text-base">
                 Self photo studio di Surabaya. Ruangan private, remote di tangan kamu, dan 20 menit
                 penuh untuk jadi versi paling kamu — tanpa ada orang lain yang mengarahkan.
               </p>
             </Reveal>
             <Reveal delay={0.45}>
-              <div className="mt-8 flex flex-wrap items-center gap-3">
+              <div className="mt-8 grid gap-3 sm:flex sm:flex-wrap sm:items-center">
                 <a
                   href="#booking"
-                  className="group inline-flex items-center gap-2 rounded-full bg-foreground px-7 py-4 text-xs font-semibold tracking-[0.16em] text-background uppercase transition-transform duration-300 hover:scale-[1.03]"
+                  className="group inline-flex items-center justify-between gap-2 rounded-full bg-foreground px-7 py-4 text-xs font-medium tracking-[0.16em] text-background uppercase transition-transform duration-300 hover:scale-[1.03] sm:justify-center"
                 >
                   Booking Sekarang
                   <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </a>
                 <a
                   href="#paket"
-                  className="inline-flex items-center gap-2 rounded-full border border-foreground/40 px-7 py-4 text-xs font-semibold tracking-[0.16em] uppercase transition-colors duration-300 hover:bg-foreground hover:text-background"
+                  className="inline-flex items-center justify-center gap-2 rounded-full border border-foreground/40 px-7 py-4 text-xs font-medium tracking-[0.16em] uppercase transition-colors duration-300 hover:bg-foreground hover:text-background"
                 >
                   Lihat Paket
                 </a>
               </div>
+            </Reveal>
+            <Reveal delay={0.55}>
+              <dl className="mt-10 grid grid-cols-3 gap-4 border-t border-border pt-6">
+                {[
+                  ["20", "menit / sesi"],
+                  ["9", "background pilihan"],
+                  ["4.9", "rating pengunjung"],
+                ].map(([a, b]) => (
+                  <div key={b}>
+                    <dt className="display text-3xl md:text-4xl">{a}</dt>
+                    <dd className="mt-1 text-[10px] tracking-[0.16em] text-muted-foreground uppercase">
+                      {b}
+                    </dd>
+                  </div>
+                ))}
+              </dl>
             </Reveal>
           </div>
 
@@ -227,14 +357,14 @@ function Hero() {
           >
             <img
               src={heroImg}
-              alt="Potret editorial hitam putih di self photo studio Surabaya"
-              width={1408}
-              height={1808}
+              alt="Potret editorial berwarna di self photo studio Surabaya"
+              width={1152}
+              height={1472}
               className="h-full w-full object-cover"
             />
-            <div className="absolute inset-x-0 bottom-0 flex items-end justify-between p-5 text-[10px] tracking-[0.18em] text-white/80 uppercase mix-blend-difference">
-              <span>No. 01 / Ruang Studio</span>
-              <span>Est. 2024</span>
+            <div className="absolute inset-x-0 bottom-0 flex items-end justify-between p-5 text-[10px] tracking-[0.18em] text-white/85 uppercase">
+              <span>No. 01 / {BRAND}</span>
+              <span>Surabaya</span>
             </div>
           </motion.div>
         </div>
@@ -245,12 +375,12 @@ function Hero() {
 
 function Statement() {
   return (
-    <section className="border-y border-border py-24 md:py-36">
+    <section className="mt-20 border-y border-border py-20 md:mt-28 md:py-36">
       <div className="mx-auto max-w-[1400px] px-5 md:px-10">
         <p className="mb-10 text-[10px] tracking-[0.24em] text-muted-foreground uppercase">
           (Statement)
         </p>
-        <h2 className="max-w-5xl text-[7.6vw] leading-[0.95] font-semibold tracking-[-0.04em] md:text-[4.4vw]">
+        <h2 className="display max-w-5xl text-[8.5vw] leading-[1.02] md:text-[4.8vw]">
           <TextReveal
             text="Ini bukan sekadar foto. Ini cara pelan-pelan berkenalan lagi dengan wajah sendiri — tanpa penonton, tanpa buru-buru."
             italicWords={["berkenalan", "sendiri", "penonton"]}
@@ -272,20 +402,20 @@ const alasan = [
   { t: "Pencahayaan estetik", d: "Lighting sudah kami set. Kamu tinggal masuk dan pose." },
   { t: "Ramah first timer", d: "Panduan pose sederhana di layar untuk yang belum terbiasa." },
   { t: "Hasil premium", d: "Tone editorial, retouch halus, bukan filter instan." },
-  { t: "Proses cepat", d: "20 menit sesi, softcopy di hari yang sama." },
+  { t: "Proses cepat", d: "20 menit sesi, file di hari yang sama." },
   { t: "Untuk banyak momen", d: "Wisuda, ulang tahun, anniversary, atau tanpa alasan sama sekali." },
 ];
 
 function Kenapa() {
   return (
-    <section id="kenapa" className="py-24 md:py-32">
+    <section id="kenapa" className="py-20 md:py-32">
       <div className="mx-auto max-w-[1400px] px-5 md:px-10">
         <div className="grid gap-14 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
           <div>
             <p className="mb-8 text-[10px] tracking-[0.24em] text-muted-foreground uppercase">
               (Kenapa di sini)
             </p>
-            <h2 className="text-[10vw] leading-[0.9] font-black tracking-[-0.05em] uppercase sm:text-[7vw] lg:text-[4.4vw]">
+            <h2 className="display text-[12vw] leading-[0.98] sm:text-[8vw] lg:text-[4.8vw]">
               <TextReveal text="Sederhana," />
               <br />
               <TextReveal text="tapi terasa" italicWords={["terasa"]} delay={0.1} />
@@ -298,8 +428,8 @@ function Kenapa() {
                   src={studioImg}
                   alt="Interior private room self photo studio dengan lighting"
                   loading="lazy"
-                  width={1400}
-                  height={1000}
+                  width={1408}
+                  height={1024}
                   className="h-[115%] w-full object-cover"
                 />
               </div>
@@ -313,7 +443,7 @@ function Kenapa() {
                   <span className="text-[10px] tracking-[0.2em] text-muted-foreground tabular-nums">
                     0{i + 1}
                   </span>
-                  <h3 className="text-xl font-semibold tracking-[-0.02em] transition-transform duration-500 group-hover:translate-x-1 md:text-2xl">
+                  <h3 className="display text-2xl transition-transform duration-500 group-hover:translate-x-1 md:text-3xl">
                     {a.t}
                   </h3>
                   <p className="col-start-2 text-sm leading-relaxed text-muted-foreground md:col-start-3">
@@ -331,15 +461,14 @@ function Kenapa() {
 
 function JenisSesi() {
   return (
-    <section id="sesi" className="border-t border-border bg-foreground py-24 text-background md:py-32">
+    <section id="sesi" className="border-t border-border bg-foreground py-20 text-background md:py-32">
       <div className="mx-auto max-w-[1400px] px-5 md:px-10">
-        <div className="mb-14 flex flex-wrap items-end justify-between gap-6">
-          <h2 className="text-[10vw] leading-[0.9] font-black tracking-[-0.05em] uppercase sm:text-[6vw] lg:text-[4vw]">
-            <TextReveal text="Jenis sesi" />
+        <div className="mb-12 flex flex-wrap items-end justify-between gap-6 md:mb-14">
+          <h2 className="display text-[12vw] leading-[1] sm:text-[7vw] lg:text-[4.4vw]">
+            <TextReveal text="Jenis sesi" italicWords={["sesi"]} />
           </h2>
           <p className="max-w-sm text-sm leading-relaxed text-background/60">
-            Enam cara berbeda untuk masuk ke ruangan yang sama. Semuanya 20 menit, semuanya milik
-            kamu sepenuhnya.
+            Enam cara berbeda untuk masuk ke ruangan yang sama. Semuanya milik kamu sepenuhnya.
           </p>
         </div>
 
@@ -350,17 +479,17 @@ function JenisSesi() {
                 <div className="grain relative aspect-[4/5] overflow-hidden">
                   <img
                     src={s.img}
-                    alt={`Contoh hasil ${s.nama} di self photo studio Surabaya`}
+                    alt={`Contoh hasil ${s.nama} di ${BRAND} Surabaya`}
                     loading="lazy"
-                    className="h-full w-full scale-105 object-cover grayscale transition-transform duration-[1200ms] ease-out group-hover:scale-100"
+                    className="h-full w-full scale-105 object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-100"
                   />
-                  <span className="absolute top-4 left-4 text-[10px] tracking-[0.2em] text-background/70">
+                  <span className="absolute top-4 left-4 text-[10px] tracking-[0.2em] text-white/80">
                     {s.no}
                   </span>
                 </div>
                 <div className="flex items-start justify-between gap-4 px-4 py-5">
                   <div className="min-w-0">
-                    <h3 className="text-lg font-semibold tracking-[-0.02em]">{s.nama}</h3>
+                    <h3 className="display text-xl">{s.nama}</h3>
                     <p className="mt-1 text-xs leading-relaxed text-background/55">{s.ket}</p>
                   </div>
                   <ArrowUpRight className="mt-1 h-4 w-4 shrink-0 opacity-40 transition-all duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 group-hover:opacity-100" />
@@ -381,7 +510,7 @@ function Strip() {
       <div className="marquee-track flex w-max gap-4">
         {items.map((src, i) => (
           <div key={i} className="grain h-32 w-24 shrink-0 overflow-hidden sm:h-44 sm:w-32">
-            <img src={src} alt="" aria-hidden loading="lazy" className="h-full w-full object-cover grayscale" />
+            <img src={src} alt="" aria-hidden loading="lazy" className="h-full w-full object-cover" />
           </div>
         ))}
       </div>
@@ -389,16 +518,16 @@ function Strip() {
   );
 }
 
-function Paket() {
+function PaketSection() {
   return (
-    <section id="paket" className="py-24 md:py-32">
+    <section id="paket" className="py-20 md:py-32">
       <div className="mx-auto max-w-[1400px] px-5 md:px-10">
-        <div className="mb-14 max-w-2xl">
+        <div className="mb-12 max-w-2xl md:mb-14">
           <p className="mb-6 text-[10px] tracking-[0.24em] text-muted-foreground uppercase">
             (Paket harga)
           </p>
-          <h2 className="text-[10vw] leading-[0.9] font-black tracking-[-0.05em] uppercase sm:text-[6vw] lg:text-[4vw]">
-            <TextReveal text="Harga jelas," italicWords={[]} />
+          <h2 className="display text-[12vw] leading-[1] sm:text-[7vw] lg:text-[4.4vw]">
+            <TextReveal text="Harga jelas," />
             <br />
             <TextReveal text="tanpa kejutan." italicWords={["kejutan"]} delay={0.1} />
           </h2>
@@ -409,24 +538,29 @@ function Paket() {
             <Reveal key={p.nama} delay={i * 0.1}>
               <div
                 className={`flex h-full flex-col p-7 transition-colors duration-500 md:p-9 ${
-                  p.unggulan
-                    ? "bg-foreground text-background"
-                    : "bg-background hover:bg-secondary"
+                  p.unggulan ? "bg-foreground text-background" : "bg-background hover:bg-secondary"
                 }`}
               >
                 <div className="flex items-start justify-between gap-3">
-                  <h3 className="text-sm font-semibold tracking-[0.14em] uppercase">{p.nama}</h3>
+                  <div className="min-w-0">
+                    <h3 className="display text-2xl">{p.nama}</h3>
+                    <p
+                      className={`mt-1 text-[10px] tracking-[0.16em] uppercase ${p.unggulan ? "text-background/60" : "text-muted-foreground"}`}
+                    >
+                      {p.hari}
+                    </p>
+                  </div>
                   {p.unggulan && (
-                    <span className="rounded-full border border-background/40 px-2.5 py-1 text-[9px] tracking-[0.16em] uppercase">
+                    <span className="shrink-0 rounded-full border border-background/40 px-2.5 py-1 text-[9px] tracking-[0.16em] uppercase">
                       Favorit
                     </span>
                   )}
                 </div>
-                <p className="mt-8 text-5xl font-black tracking-[-0.05em] md:text-6xl">{p.harga}</p>
+                <p className="display mt-8 text-5xl md:text-6xl">{p.harga}</p>
                 <p
                   className={`mt-2 text-xs tracking-[0.14em] uppercase ${p.unggulan ? "text-background/60" : "text-muted-foreground"}`}
                 >
-                  {p.orang}
+                  {p.orang} · {p.durasi}
                 </p>
                 <ul className="mt-8 space-y-3 text-sm">
                   {p.fitur.map((f) => (
@@ -437,16 +571,14 @@ function Paket() {
                       <span className={p.unggulan ? "text-background/40" : "text-muted-foreground"}>
                         —
                       </span>
-                      {f}
+                      <span className="min-w-0">{f}</span>
                     </li>
                   ))}
                 </ul>
                 <a
                   href="#booking"
-                  className={`mt-9 inline-flex items-center justify-between gap-2 rounded-full px-6 py-3.5 text-[11px] font-semibold tracking-[0.16em] uppercase transition-transform duration-300 hover:scale-[1.02] ${
-                    p.unggulan
-                      ? "bg-background text-foreground"
-                      : "bg-foreground text-background"
+                  className={`mt-9 inline-flex items-center justify-between gap-2 rounded-full px-6 py-3.5 text-[11px] font-medium tracking-[0.16em] uppercase transition-transform duration-300 hover:scale-[1.02] ${
+                    p.unggulan ? "bg-background text-foreground" : "bg-foreground text-background"
                   }`}
                 >
                   Pilih paket ini
@@ -457,23 +589,48 @@ function Paket() {
           ))}
         </div>
 
-        <Reveal delay={0.2}>
-          <div className="mt-10 flex flex-wrap items-center justify-between gap-5 border border-border p-7">
-            <p className="max-w-md text-sm leading-relaxed text-muted-foreground">
-              Masih bingung pilih yang mana? Kabari kami jumlah orang dan momennya, nanti kami
-              bantu pilihkan.
+        <div className="mt-14 grid gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:gap-16">
+          <div>
+            <p className="mb-6 text-[10px] tracking-[0.24em] text-muted-foreground uppercase">
+              (Tambahan)
             </p>
+            <ul className="divide-y divide-border border-y border-border">
+              {tambahan.map((t, i) => (
+                <Reveal key={t.t} delay={i * 0.05}>
+                  <li className="grid grid-cols-[minmax(0,1fr)_auto] items-baseline gap-4 py-5">
+                    <div className="min-w-0">
+                      <p className="display text-xl">{t.t}</p>
+                      <p className="mt-1 text-xs text-muted-foreground">{t.d}</p>
+                    </div>
+                    <span className="shrink-0 text-sm font-medium tabular-nums">{t.h}</span>
+                  </li>
+                </Reveal>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <p className="mb-6 text-[10px] tracking-[0.24em] text-muted-foreground uppercase">
+              (Perlu diketahui)
+            </p>
+            <ul className="space-y-4 border-t border-border pt-5 text-sm leading-relaxed text-muted-foreground">
+              {catatan.map((c) => (
+                <li key={c} className="flex gap-3">
+                  <span>—</span>
+                  <span>{c}</span>
+                </li>
+              ))}
+            </ul>
             <a
               href={WA}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 rounded-full bg-foreground px-7 py-4 text-xs font-semibold tracking-[0.16em] text-background uppercase transition-transform duration-300 hover:scale-[1.03]"
+              className="mt-8 inline-flex items-center gap-2 rounded-full bg-foreground px-6 py-3.5 text-[11px] font-medium tracking-[0.16em] text-background uppercase transition-transform duration-300 hover:scale-[1.03]"
             >
               Tanya via WhatsApp
               <ArrowUpRight className="h-4 w-4" />
             </a>
           </div>
-        </Reveal>
+        </div>
       </div>
     </section>
   );
@@ -489,10 +646,10 @@ const galeri = [
 
 function Galeri() {
   return (
-    <section id="galeri" className="border-t border-border py-24 md:py-32">
+    <section id="galeri" className="border-t border-border py-20 md:py-32">
       <div className="mx-auto max-w-[1400px] px-5 md:px-10">
         <div className="mb-12 flex flex-wrap items-end justify-between gap-6">
-          <h2 className="text-[10vw] leading-[0.9] font-black tracking-[-0.05em] uppercase sm:text-[6vw] lg:text-[4vw]">
+          <h2 className="display text-[12vw] leading-[1] sm:text-[7vw] lg:text-[4.4vw]">
             <TextReveal text="Hasil" />{" "}
             <TextReveal text="sesi" italicWords={["sesi"]} delay={0.1} />
           </h2>
@@ -510,7 +667,7 @@ function Galeri() {
                     src={g.src}
                     alt={`Hasil foto kategori ${g.cat}`}
                     loading="lazy"
-                    className="h-full w-full object-cover grayscale transition-transform duration-[1400ms] ease-out group-hover:scale-105"
+                    className="h-full w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-105"
                   />
                 </div>
                 <figcaption className="absolute bottom-0 left-0 translate-y-2 bg-background px-4 py-2 text-[10px] tracking-[0.2em] uppercase opacity-0 transition-all duration-500 group-hover:translate-y-0 group-hover:opacity-100">
@@ -525,45 +682,48 @@ function Galeri() {
   );
 }
 
-function Testimoni() {
+function TestiCard({ t }: { t: (typeof testimoni)[number] }) {
   return (
-    <section className="border-t border-border py-24 md:py-32">
-      <div className="mx-auto max-w-[1400px] px-5 md:px-10">
-        <div className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-20">
-          <Parallax distance={30}>
-            <div className="grain aspect-[3/4] overflow-hidden bg-muted">
-              <img
-                src={soloImg}
-                alt="Potret pengunjung studio"
-                loading="lazy"
-                className="h-[112%] w-full object-cover grayscale"
-              />
-            </div>
-          </Parallax>
+    <figure className="w-[78vw] shrink-0 border border-border p-6 sm:w-[420px] md:p-8">
+      <p className="display text-xl leading-[1.35] md:text-2xl">
+        <span className="italic">“</span>
+        {t.q}
+        <span className="italic">”</span>
+      </p>
+      <figcaption className="mt-6 flex items-center gap-3 text-[10px] tracking-[0.2em] text-muted-foreground uppercase">
+        <span className="text-foreground">{t.n}</span>
+        <span className="h-px w-8 bg-border" />
+        <span>{t.d}</span>
+      </figcaption>
+    </figure>
+  );
+}
 
-          <div>
-            <p className="mb-10 text-[10px] tracking-[0.24em] text-muted-foreground uppercase">
-              (Kata mereka)
-            </p>
-            <div className="divide-y divide-border border-y border-border">
-              {testimoni.map((t, i) => (
-                <Reveal key={t.n} delay={i * 0.1}>
-                  <blockquote className="py-9">
-                    <p className="text-xl leading-[1.35] font-medium tracking-[-0.02em] md:text-[1.7rem]">
-                      <span className="font-serif-editorial italic">“</span>
-                      {t.q}
-                      <span className="font-serif-editorial italic">”</span>
-                    </p>
-                    <footer className="mt-5 flex items-center gap-3 text-[10px] tracking-[0.2em] text-muted-foreground uppercase">
-                      <span className="text-foreground">{t.n}</span>
-                      <span className="h-px w-8 bg-border" />
-                      <span>{t.d}</span>
-                    </footer>
-                  </blockquote>
-                </Reveal>
-              ))}
-            </div>
-          </div>
+function Testimoni() {
+  const rowA = [...testimoni, ...testimoni];
+  const rowB = [...testimoni.slice().reverse(), ...testimoni.slice().reverse()];
+  return (
+    <section className="overflow-hidden border-t border-border py-20 md:py-32">
+      <div className="mx-auto mb-12 max-w-[1400px] px-5 md:px-10">
+        <p className="mb-6 text-[10px] tracking-[0.24em] text-muted-foreground uppercase">
+          (Kata mereka)
+        </p>
+        <h2 className="display text-[12vw] leading-[1] sm:text-[7vw] lg:text-[4.4vw]">
+          <TextReveal text="Cerita dari" />{" "}
+          <TextReveal text="pengunjung" italicWords={["pengunjung"]} delay={0.1} />
+        </h2>
+      </div>
+
+      <div className="group space-y-4 overflow-hidden">
+        <div className="marquee-slow flex w-max gap-4 group-hover:[animation-play-state:paused]">
+          {rowA.map((t, i) => (
+            <TestiCard key={`a${i}`} t={t} />
+          ))}
+        </div>
+        <div className="marquee-reverse flex w-max gap-4 group-hover:[animation-play-state:paused]">
+          {rowB.map((t, i) => (
+            <TestiCard key={`b${i}`} t={t} />
+          ))}
         </div>
       </div>
     </section>
@@ -572,13 +732,13 @@ function Testimoni() {
 
 function Cara() {
   return (
-    <section className="bg-foreground py-24 text-background md:py-32">
+    <section className="bg-foreground py-20 text-background md:py-32">
       <div className="mx-auto max-w-[1400px] px-5 md:px-10">
-        <div className="mb-14 max-w-2xl">
+        <div className="mb-12 max-w-2xl md:mb-14">
           <p className="mb-6 text-[10px] tracking-[0.24em] text-background/50 uppercase">
             (Cara booking)
           </p>
-          <h2 className="text-[9vw] leading-[0.9] font-black tracking-[-0.05em] uppercase sm:text-[5.5vw] lg:text-[3.6vw]">
+          <h2 className="display text-[11vw] leading-[1] sm:text-[6vw] lg:text-[4vw]">
             <TextReveal text="Lima langkah," />{" "}
             <TextReveal text="selesai." italicWords={["selesai"]} delay={0.1} />
           </h2>
@@ -591,10 +751,10 @@ function Cara() {
           {langkah.map((l, i) => (
             <Reveal key={l.t} delay={i * 0.08}>
               <li className="group h-full bg-foreground p-7">
-                <span className="block text-4xl font-black tracking-[-0.05em] text-background/25 transition-colors duration-500 group-hover:text-background">
+                <span className="display block text-4xl text-background/30 transition-colors duration-500 group-hover:text-background">
                   0{i + 1}
                 </span>
-                <h3 className="mt-6 text-lg font-semibold tracking-[-0.02em]">{l.t}</h3>
+                <h3 className="display mt-6 text-xl">{l.t}</h3>
                 <p className="mt-2 text-xs leading-relaxed text-background/55">{l.d}</p>
               </li>
             </Reveal>
@@ -608,10 +768,10 @@ function Cara() {
 function Faq() {
   const [open, setOpen] = useState<number | null>(0);
   return (
-    <section id="faq" className="py-24 md:py-32">
+    <section id="faq" className="py-20 md:py-32">
       <div className="mx-auto max-w-[1400px] px-5 md:px-10">
         <div className="grid gap-12 lg:grid-cols-[0.7fr_1.3fr] lg:gap-20">
-          <h2 className="text-[10vw] leading-[0.9] font-black tracking-[-0.05em] uppercase sm:text-[6vw] lg:text-[3.6vw]">
+          <h2 className="display text-[12vw] leading-[1] sm:text-[7vw] lg:text-[4vw]">
             <TextReveal text="Sering" />
             <br />
             <TextReveal text="ditanya" italicWords={["ditanya"]} delay={0.1} />
@@ -628,7 +788,7 @@ function Faq() {
                     aria-expanded={isOpen}
                     className="group grid w-full grid-cols-[minmax(0,1fr)_auto] items-center gap-4 py-6 text-left"
                   >
-                    <span className="min-w-0 text-base font-medium tracking-[-0.01em] transition-transform duration-500 group-hover:translate-x-1 md:text-xl">
+                    <span className="display min-w-0 text-lg transition-transform duration-500 group-hover:translate-x-1 md:text-2xl">
                       {f.q}
                     </span>
                     {isOpen ? (
@@ -657,9 +817,48 @@ function Faq() {
   );
 }
 
+/* ---------- Booking: kalender + slot 20 menit ---------- */
+
+const HARI = ["S", "S", "R", "K", "J", "S", "M"];
+const BULAN = [
+  "Januari", "Februari", "Maret", "April", "Mei", "Juni",
+  "Juli", "Agustus", "September", "Oktober", "November", "Desember",
+];
+
+function buildSlots() {
+  const out: string[] = [];
+  for (let h = 10; h <= 20; h++) {
+    for (const m of [0, 20, 40]) {
+      if (h === 20 && m > 20) break;
+      out.push(`${String(h).padStart(2, "0")}.${String(m).padStart(2, "0")}`);
+    }
+  }
+  return out;
+}
+const SLOTS = buildSlots();
+
 function Booking() {
+  const today = useMemo(() => {
+    const d = new Date();
+    d.setHours(0, 0, 0, 0);
+    return d;
+  }, []);
+  const [cursor, setCursor] = useState(() => new Date(today.getFullYear(), today.getMonth(), 1));
+  const [picked, setPicked] = useState<Date | null>(null);
+  const [slot, setSlot] = useState<string | null>(null);
   const [sent, setSent] = useState(false);
   const [error, setError] = useState("");
+
+  const days = useMemo(() => {
+    const first = new Date(cursor.getFullYear(), cursor.getMonth(), 1);
+    const startPad = (first.getDay() + 6) % 7; // Senin = 0
+    const total = new Date(cursor.getFullYear(), cursor.getMonth() + 1, 0).getDate();
+    const cells: (Date | null)[] = Array.from({ length: startPad }, () => null);
+    for (let d = 1; d <= total; d++) cells.push(new Date(cursor.getFullYear(), cursor.getMonth(), d));
+    return cells;
+  }, [cursor]);
+
+  const fmt = (d: Date) => `${d.getDate()} ${BULAN[d.getMonth()]} ${d.getFullYear()}`;
 
   const onSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -667,107 +866,186 @@ function Booking() {
     const nama = String(data.get("nama") ?? "").trim();
     const wa = String(data.get("wa") ?? "").trim();
     const paketPilih = String(data.get("paket") ?? "");
-    const tanggal = String(data.get("tanggal") ?? "");
-    const jam = String(data.get("jam") ?? "");
+    const orang = String(data.get("orang") ?? "");
     const pesan = String(data.get("pesan") ?? "").trim();
 
     if (nama.length < 2 || nama.length > 80) return setError("Nama minimal 2 karakter.");
     if (!/^[0-9+\s-]{8,20}$/.test(wa)) return setError("Nomor WhatsApp belum valid.");
-    if (!tanggal) return setError("Pilih tanggal sesi dulu ya.");
+    if (!picked) return setError("Pilih tanggal sesi dulu ya.");
+    if (!slot) return setError("Pilih jam sesi dulu ya.");
     if (pesan.length > 500) return setError("Pesan terlalu panjang.");
 
     setError("");
     setSent(true);
-    const text = `Halo RUANG Studio, saya ${nama} mau booking ${paketPilih} pada ${tanggal} jam ${jam}. ${pesan}`;
+    const text = `Halo ${BRAND}, saya ${nama} mau booking ${paketPilih} untuk ${orang} pada ${fmt(picked)} jam ${slot} WIB. ${pesan}`;
     window.open(`${WA}?text=${encodeURIComponent(text)}`, "_blank", "noopener");
   };
 
   const field =
     "w-full border-b border-border bg-transparent py-3 text-sm outline-none transition-colors placeholder:text-muted-foreground focus:border-foreground";
+  const label = "text-[10px] tracking-[0.2em] text-muted-foreground uppercase";
 
   return (
-    <section id="booking" className="border-t border-border py-24 md:py-32">
+    <section id="booking" className="border-t border-border py-20 md:py-32">
       <div className="mx-auto max-w-[1400px] px-5 md:px-10">
-        <div className="grid gap-14 lg:grid-cols-[1fr_1fr] lg:gap-20">
-          <div>
-            <h2 className="text-[11vw] leading-[0.88] font-black tracking-[-0.055em] uppercase sm:text-[7vw] lg:text-[4.6vw]">
-              <TextReveal text="Amankan" />
-              <br />
-              <TextReveal text="jadwal kamu" italicWords={["jadwal"]} delay={0.1} />
-            </h2>
-            <Reveal delay={0.2}>
-              <p className="mt-7 max-w-md text-sm leading-relaxed text-muted-foreground">
-                Isi formnya, kami konfirmasi lewat WhatsApp maksimal 1 jam di jam operasional.
-                Slot akhir pekan biasanya cepat penuh.
-              </p>
-            </Reveal>
-            <Reveal delay={0.3}>
-              <div className="mt-10 space-y-5 border-t border-border pt-8 text-sm">
-                <p className="flex items-start gap-3">
-                  <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" />
-                  <span>
-                    Jl. Raya Gubeng No. 21, Surabaya, Indonesia
-                    <br />
-                    <span className="text-muted-foreground">Setiap hari, 10.00 – 21.00 WIB</span>
-                  </span>
-                </p>
-                <a
-                  href={WA}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full border border-foreground/40 px-6 py-3 text-[11px] font-semibold tracking-[0.16em] uppercase transition-colors hover:bg-foreground hover:text-background"
-                >
-                  Chat WhatsApp langsung
-                  <ArrowUpRight className="h-4 w-4" />
-                </a>
-              </div>
-            </Reveal>
-          </div>
+        <div className="mb-12 max-w-2xl">
+          <p className="mb-6 text-[10px] tracking-[0.24em] text-muted-foreground uppercase">
+            (Booking)
+          </p>
+          <h2 className="display text-[13vw] leading-[0.98] sm:text-[7vw] lg:text-[4.6vw]">
+            <TextReveal text="Amankan" />{" "}
+            <TextReveal text="jadwal kamu" italicWords={["jadwal"]} delay={0.1} />
+          </h2>
+          <p className="mt-6 max-w-md text-sm leading-relaxed text-muted-foreground">
+            Pilih tanggal, lalu slot per 20 menit. Kami konfirmasi lewat WhatsApp maksimal 1 jam di
+            jam operasional.
+          </p>
+        </div>
 
+        <div className="grid gap-10 lg:grid-cols-[1fr_1fr] lg:gap-16">
+          {/* Kalender + slot */}
+          <Reveal>
+            <div className="border border-border p-5 md:p-7">
+              <div className="mb-5 grid grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-3">
+                <button
+                  type="button"
+                  aria-label="Bulan sebelumnya"
+                  onClick={() => setCursor(new Date(cursor.getFullYear(), cursor.getMonth() - 1, 1))}
+                  className="grid h-9 w-9 place-items-center rounded-full border border-border transition-colors hover:bg-secondary"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </button>
+                <p className="display text-center text-xl md:text-2xl">
+                  {BULAN[cursor.getMonth()]} {cursor.getFullYear()}
+                </p>
+                <button
+                  type="button"
+                  aria-label="Bulan berikutnya"
+                  onClick={() => setCursor(new Date(cursor.getFullYear(), cursor.getMonth() + 1, 1))}
+                  className="grid h-9 w-9 place-items-center rounded-full border border-border transition-colors hover:bg-secondary"
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </button>
+              </div>
+
+              <div className="grid grid-cols-7 gap-1 text-center text-[10px] tracking-[0.14em] text-muted-foreground uppercase">
+                {HARI.map((h, i) => (
+                  <span key={i} className="py-2">
+                    {h}
+                  </span>
+                ))}
+              </div>
+              <div className="grid grid-cols-7 gap-1">
+                {days.map((d, i) => {
+                  if (!d) return <span key={i} />;
+                  const past = d < today;
+                  const active = picked?.toDateString() === d.toDateString();
+                  return (
+                    <button
+                      key={i}
+                      type="button"
+                      disabled={past}
+                      onClick={() => {
+                        setPicked(d);
+                        setSlot(null);
+                      }}
+                      className={`aspect-square rounded-sm text-sm tabular-nums transition-colors ${
+                        past
+                          ? "cursor-not-allowed text-muted-foreground/35"
+                          : active
+                            ? "bg-foreground text-background"
+                            : "hover:bg-secondary"
+                      }`}
+                    >
+                      {d.getDate()}
+                    </button>
+                  );
+                })}
+              </div>
+
+              <div className="mt-7 border-t border-border pt-6">
+                <p className={label}>
+                  {picked ? `Slot ${fmt(picked)}` : "Pilih tanggal untuk melihat slot"}
+                </p>
+                <AnimatePresence mode="wait">
+                  {picked && (
+                    <motion.div
+                      key={picked.toDateString()}
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                      className="mt-4 grid grid-cols-3 gap-2 sm:grid-cols-4"
+                    >
+                      {SLOTS.map((s) => (
+                        <button
+                          key={s}
+                          type="button"
+                          onClick={() => setSlot(s)}
+                          className={`rounded-sm border py-2.5 text-xs tabular-nums transition-colors ${
+                            slot === s
+                              ? "border-foreground bg-foreground text-background"
+                              : "border-border hover:bg-secondary"
+                          }`}
+                        >
+                          {s}
+                        </button>
+                      ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+                <p className="mt-4 text-[11px] text-muted-foreground">
+                  Setiap slot berdurasi 20 menit. Jam operasional 10.00 – 21.00 WIB.
+                </p>
+              </div>
+            </div>
+          </Reveal>
+
+          {/* Form */}
           <Reveal delay={0.15}>
             <form onSubmit={onSubmit} className="grid gap-6 border border-border p-6 md:p-9">
               <div className="grid gap-6 sm:grid-cols-2">
                 <label className="block">
-                  <span className="text-[10px] tracking-[0.2em] text-muted-foreground uppercase">
-                    Nama
-                  </span>
+                  <span className={label}>Nama</span>
                   <input name="nama" maxLength={80} required placeholder="Nama kamu" className={field} />
                 </label>
                 <label className="block">
-                  <span className="text-[10px] tracking-[0.2em] text-muted-foreground uppercase">
-                    No. WhatsApp
-                  </span>
+                  <span className={label}>No. WhatsApp</span>
                   <input name="wa" maxLength={20} required placeholder="08xxxxxxxxxx" className={field} />
                 </label>
               </div>
-              <label className="block">
-                <span className="text-[10px] tracking-[0.2em] text-muted-foreground uppercase">
-                  Pilihan paket
-                </span>
-                <select name="paket" className={field} defaultValue="Paket Solo — Rp99.000">
-                  <option>Paket Solo — Rp99.000</option>
-                  <option>Paket Couple / Duo — Rp149.000</option>
-                  <option>Paket Group — Rp199.000</option>
-                </select>
-              </label>
               <div className="grid gap-6 sm:grid-cols-2">
                 <label className="block">
-                  <span className="text-[10px] tracking-[0.2em] text-muted-foreground uppercase">
-                    Tanggal
-                  </span>
-                  <input type="date" name="tanggal" required className={field} />
+                  <span className={label}>Pilihan paket</span>
+                  <select name="paket" className={field} defaultValue="Basic Self Photo — Rp89.000">
+                    <option>Basic Self Photo — Rp89.000</option>
+                    <option>Weekend Self Photo — Rp119.000</option>
+                    <option>Group / Wisuda — Rp179.000</option>
+                  </select>
                 </label>
                 <label className="block">
-                  <span className="text-[10px] tracking-[0.2em] text-muted-foreground uppercase">
-                    Jam
-                  </span>
-                  <input type="time" name="jam" defaultValue="14:00" className={field} />
+                  <span className={label}>Jumlah orang</span>
+                  <select name="orang" className={field} defaultValue="2 orang">
+                    {["1 orang", "2 orang", "3 orang", "4 orang", "5 orang", "6+ orang"].map((o) => (
+                      <option key={o}>{o}</option>
+                    ))}
+                  </select>
                 </label>
               </div>
+
+              <div className="grid grid-cols-2 gap-4 border-y border-border py-4">
+                <div>
+                  <p className={label}>Tanggal</p>
+                  <p className="display mt-1 text-lg">{picked ? fmt(picked) : "—"}</p>
+                </div>
+                <div>
+                  <p className={label}>Jam</p>
+                  <p className="display mt-1 text-lg">{slot ? `${slot} WIB` : "—"}</p>
+                </div>
+              </div>
+
               <label className="block">
-                <span className="text-[10px] tracking-[0.2em] text-muted-foreground uppercase">
-                  Pesan tambahan
-                </span>
+                <span className={label}>Pesan tambahan</span>
                 <textarea
                   name="pesan"
                   rows={3}
@@ -786,11 +1064,22 @@ function Booking() {
 
               <button
                 type="submit"
-                className="mt-2 inline-flex items-center justify-between gap-2 rounded-full bg-foreground px-7 py-4 text-xs font-semibold tracking-[0.16em] text-background uppercase transition-transform duration-300 hover:scale-[1.02]"
+                className="mt-2 inline-flex items-center justify-between gap-2 rounded-full bg-foreground px-7 py-4 text-xs font-medium tracking-[0.16em] text-background uppercase transition-transform duration-300 hover:scale-[1.02]"
               >
                 Kirim & Booking Sekarang
                 <ArrowUpRight className="h-4 w-4" />
               </button>
+
+              <div className="space-y-4 border-t border-border pt-6 text-sm">
+                <p className="flex items-start gap-3">
+                  <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-muted-foreground" />
+                  <span>
+                    Jl. Raya Gubeng No. 21, Surabaya, Indonesia
+                    <br />
+                    <span className="text-muted-foreground">Setiap hari, 10.00 – 21.00 WIB</span>
+                  </span>
+                </p>
+              </div>
             </form>
           </Reveal>
         </div>
@@ -805,9 +1094,9 @@ function Footer() {
       <div className="mx-auto max-w-[1400px] px-5 md:px-10">
         <div className="grid gap-12 border-b border-background/15 pb-14 md:grid-cols-[1.4fr_1fr_1fr]">
           <div>
-            <p className="max-w-sm text-2xl leading-[1.15] font-semibold tracking-[-0.03em] md:text-3xl">
+            <p className="display max-w-sm text-3xl leading-[1.15] md:text-4xl">
               Ruang kecil di Surabaya, untuk cerita yang{" "}
-              <span className="font-serif-editorial italic">tidak kecil.</span>
+              <span className="italic">tidak kecil.</span>
             </p>
           </div>
           <nav className="flex flex-col gap-3 text-[11px] tracking-[0.18em] uppercase">
@@ -828,7 +1117,7 @@ function Footer() {
                 href="https://instagram.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                aria-label="Instagram RUANG Studio"
+                aria-label={`Instagram ${BRAND}`}
                 className="grid h-9 w-9 place-items-center rounded-full border border-background/25 transition-colors hover:bg-background hover:text-foreground"
               >
                 <Instagram className="h-4 w-4" />
@@ -845,11 +1134,11 @@ function Footer() {
           </div>
         </div>
 
-        <p className="pt-10 text-[13vw] leading-[0.8] font-black tracking-[-0.06em] uppercase">
-          Ruang<span className="font-serif-editorial lowercase italic">studio</span>
+        <p className="display pt-10 text-[15vw] leading-[0.85]">
+          Pic <span className="italic">n</span> Pose
         </p>
         <p className="mt-8 text-[10px] tracking-[0.18em] text-background/45 uppercase">
-          © {new Date().getFullYear()} RUANG Self Photo Studio · Surabaya, Indonesia
+          © {new Date().getFullYear()} {BRAND} · Self Photo Studio Surabaya
         </p>
       </div>
     </footer>
