@@ -87,7 +87,7 @@ const paket: Paket[] = [
       "20 menit photoshoot",
       "5 menit pemilihan foto",
       "Free 2 cetak 4R",
-      "Free semua file (black & white)",
+      "Free semua file (warna asli, tanpa watermark)",
       "Free props & properti studio",
       "Private room, remote di tangan kamu",
     ],
@@ -102,7 +102,7 @@ const paket: Paket[] = [
       "20 menit photoshoot",
       "5 menit pemilihan foto",
       "Free 3 cetak 4R",
-      "Free semua file (black & white)",
+      "Free semua file (warna asli, tanpa watermark)",
       "Free props & 1 kostum",
       "Prioritas slot jam ramai",
     ],
@@ -118,7 +118,7 @@ const paket: Paket[] = [
       "30 menit photoshoot",
       "10 menit pemilihan foto",
       "Free 5 cetak 4R",
-      "Free semua file (black & white)",
+      "Free semua file (warna asli, tanpa watermark)",
       "Background khusus wisuda / adat",
       "Private room lebih luas",
     ],
@@ -130,7 +130,7 @@ const tambahan = [
   { t: "Onesie / kostum", d: "Per kostum per sesi", h: "Rp15.000" },
   { t: "Properti studio", d: "Kursi, cermin, bunga, papan", h: "Gratis" },
   { t: "Cetak tambahan", d: "Per 1 lembar cetak 4R", h: "Rp10.000" },
-  { t: "Semua file berwarna", d: "Softcopy full color, tanpa watermark", h: "Rp20.000" },
+  { t: "Tambah waktu", d: "Perpanjang 10 menit sesi", h: "Rp25.000" },
   { t: "Retouch premium", d: "5 foto edit detail, dikirim H+2", h: "Rp50.000" },
 ];
 
@@ -153,7 +153,7 @@ const testimoni = [
 const faq = [
   { q: "Satu sesi berapa menit?", a: "Sesi reguler 20 menit di dalam ruangan, plus 5 menit untuk memilih foto. Paket Group/Wisuda mendapat 30 menit sesi." },
   { q: "Maksimal berapa orang dalam satu sesi?", a: "Paket Basic dan Weekend gratis untuk 1–5 orang, Group/Wisuda sampai 8 orang. Lebih dari itu ada biaya tambahan Rp15.000 per orang." },
-  { q: "Apakah dapat file digitalnya?", a: "Dapat. Semua file black & white kami kirim gratis tanpa watermark. Versi full color bisa ditambah Rp20.000." },
+  { q: "Apakah dapat file digitalnya?", a: "Dapat. Semua file kami kirim gratis dengan warna asli, tanpa watermark, di hari yang sama." },
   { q: "Apakah bisa langsung cetak?", a: "Bisa. Cetak 4R tersedia di studio dan bisa langsung dibawa pulang setelah sesi." },
   { q: "Apakah bisa reschedule?", a: "Bisa, maksimal H-1 sebelum jadwal sesi dan berlaku satu kali. Cukup kabari kami lewat WhatsApp." },
   { q: "Boleh bawa properti sendiri?", a: "Boleh banget. Bunga, balon, banner wisuda, boneka, sampai outfit ganti — silakan bawa." },
@@ -208,9 +208,6 @@ function Header() {
         <div className="mx-auto grid max-w-[1400px] grid-cols-[minmax(0,1fr)_auto] items-center gap-4 px-5 py-3 md:px-10">
           <a href="#top" className="min-w-0 truncate">
             <Wordmark className="text-xl md:text-2xl" />
-            <span className="ml-2 hidden text-[10px] tracking-[0.22em] text-muted-foreground uppercase sm:inline">
-              Self Photo Studio
-            </span>
           </a>
           <div className="flex items-center gap-3 md:gap-6">
             <nav className="hidden items-center gap-6 lg:flex">
@@ -281,9 +278,9 @@ function Header() {
             <a
               href="#booking"
               onClick={() => setOpen(false)}
-              className="mt-10 flex items-center justify-between rounded-full bg-foreground px-7 py-4 text-xs font-medium tracking-[0.16em] text-background uppercase"
+              className="mt-10 flex items-center justify-center gap-2 rounded-full bg-foreground px-7 py-4 text-xs font-medium tracking-[0.16em] text-background uppercase"
             >
-              Booking sekarang
+              <span>Booking sekarang</span>
               <ArrowUpRight className="h-4 w-4" />
             </a>
           </motion.div>
@@ -302,11 +299,7 @@ function Hero() {
             <h1 className="display text-[15vw] leading-[0.92] sm:text-[10vw] lg:text-[7vw]">
               <TextReveal text="Cerita kamu," />
               <br />
-              <TextReveal text="ditangkap" italicWords={["ditangkap"]} delay={0.2} />
-              <br />
-              <span className="font-sans text-[9vw] font-light tracking-[-0.03em] sm:text-[6vw] lg:text-[4.2vw]">
-                <TextReveal text="sendiri." delay={0.4} />
-              </span>
+              <TextReveal text="ditangkap sendiri." italicWords={["sendiri."]} delay={0.2} />
             </h1>
             <Reveal delay={0.35}>
               <p className="mt-6 max-w-md text-sm leading-relaxed text-muted-foreground md:mt-7 md:text-base">
@@ -318,7 +311,7 @@ function Hero() {
               <div className="mt-8 grid gap-3 sm:flex sm:flex-wrap sm:items-center">
                 <a
                   href="#booking"
-                  className="group inline-flex items-center justify-between gap-2 rounded-full bg-foreground px-7 py-4 text-xs font-medium tracking-[0.16em] text-background uppercase transition-transform duration-300 hover:scale-[1.03] sm:justify-center"
+                  className="group inline-flex items-center justify-center gap-2 rounded-full bg-foreground px-7 py-4 text-xs font-medium tracking-[0.16em] text-background uppercase transition-transform duration-300 hover:scale-[1.03]"
                 >
                   Booking Sekarang
                   <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -416,11 +409,9 @@ function Kenapa() {
               (Kenapa di sini)
             </p>
             <h2 className="display text-[12vw] leading-[0.98] sm:text-[8vw] lg:text-[4.8vw]">
-              <TextReveal text="Sederhana," />
+              <TextReveal text="Sederhana, tapi" />
               <br />
-              <TextReveal text="tapi terasa" italicWords={["terasa"]} delay={0.1} />
-              <br />
-              <TextReveal text="berbeda." delay={0.2} />
+              <TextReveal text="terasa berbeda." italicWords={["berbeda."]} delay={0.1} />
             </h2>
             <Parallax className="mt-10 hidden overflow-hidden lg:block" distance={40}>
               <div className="grain aspect-[7/5] overflow-hidden bg-muted">
@@ -526,10 +517,8 @@ function PaketSection() {
           <p className="mb-6 text-[10px] tracking-[0.24em] text-muted-foreground uppercase">
             (Paket harga)
           </p>
-          <h2 className="display text-[12vw] leading-[1] sm:text-[7vw] lg:text-[4.4vw]">
-            <TextReveal text="Harga jelas," />
-            <br />
-            <TextReveal text="tanpa kejutan." italicWords={["kejutan"]} delay={0.1} />
+          <h2 className="display text-[9vw] leading-[1.05] sm:text-[6vw] lg:text-[3.8vw]">
+            <TextReveal text="Harga jelas, tanpa kejutan." italicWords={["kejutan."]} />
           </h2>
         </div>
 
@@ -577,7 +566,7 @@ function PaketSection() {
                 </ul>
                 <a
                   href="#booking"
-                  className={`mt-9 inline-flex items-center justify-between gap-2 rounded-full px-6 py-3.5 text-[11px] font-medium tracking-[0.16em] uppercase transition-transform duration-300 hover:scale-[1.02] ${
+                  className={`mt-9 inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-[11px] font-medium tracking-[0.16em] uppercase transition-transform duration-300 hover:scale-[1.02] ${
                     p.unggulan ? "bg-background text-foreground" : "bg-foreground text-background"
                   }`}
                 >
@@ -637,11 +626,11 @@ function PaketSection() {
 }
 
 const galeri = [
-  { src: wisudaImg, cat: "Wisuda", span: "lg:col-span-5 lg:row-span-2", ratio: "aspect-[4/5]" },
-  { src: coupleImg, cat: "Couple", span: "lg:col-span-4", ratio: "aspect-[4/5]" },
-  { src: bestieImg, cat: "Sahabat", span: "lg:col-span-3", ratio: "aspect-[3/4]" },
-  { src: soloImg, cat: "Solo", span: "lg:col-span-3", ratio: "aspect-[3/4]" },
-  { src: brandingImg, cat: "Personal Branding", span: "lg:col-span-4", ratio: "aspect-[4/5]" },
+  { src: gal4Img, cat: "Wisuda", span: "lg:col-span-5 lg:row-span-2", ratio: "aspect-[4/5]" },
+  { src: gal2Img, cat: "Couple", span: "lg:col-span-4", ratio: "aspect-[4/5]" },
+  { src: gal1Img, cat: "Solo", span: "lg:col-span-3", ratio: "aspect-[3/4]" },
+  { src: gal5Img, cat: "Family", span: "lg:col-span-3", ratio: "aspect-[3/4]" },
+  { src: gal3Img, cat: "Sahabat", span: "lg:col-span-4", ratio: "aspect-[4/5]" },
 ];
 
 function Galeri() {
@@ -654,7 +643,7 @@ function Galeri() {
             <TextReveal text="sesi" italicWords={["sesi"]} delay={0.1} />
           </h2>
           <p className="text-[10px] tracking-[0.2em] text-muted-foreground uppercase">
-            Wisuda · Couple · Solo · Sahabat
+            Wisuda · Couple · Solo · Family · Sahabat
           </p>
         </div>
 
@@ -771,10 +760,8 @@ function Faq() {
     <section id="faq" className="py-20 md:py-32">
       <div className="mx-auto max-w-[1400px] px-5 md:px-10">
         <div className="grid gap-12 lg:grid-cols-[0.7fr_1.3fr] lg:gap-20">
-          <h2 className="display text-[12vw] leading-[1] sm:text-[7vw] lg:text-[4vw]">
-            <TextReveal text="Sering" />
-            <br />
-            <TextReveal text="ditanya" italicWords={["ditanya"]} delay={0.1} />
+          <h2 className="display text-[11vw] leading-[1.05] sm:text-[6vw] lg:text-[3.6vw]">
+            <TextReveal text="Sering ditanya" italicWords={["ditanya"]} />
           </h2>
 
           <div className="divide-y divide-border border-y border-border">
@@ -1017,10 +1004,14 @@ function Booking() {
               <div className="grid gap-6 sm:grid-cols-2">
                 <label className="block">
                   <span className={label}>Pilihan paket</span>
-                  <select name="paket" className={field} defaultValue="Basic Self Photo — Rp89.000">
-                    <option>Basic Self Photo — Rp89.000</option>
-                    <option>Weekend Self Photo — Rp119.000</option>
-                    <option>Group / Wisuda — Rp179.000</option>
+                  <select
+                    name="paket"
+                    className={field}
+                    defaultValue={`${paket[0].nama} — ${paket[0].harga}`}
+                  >
+                    {paket.map((p) => (
+                      <option key={p.nama}>{`${p.nama} — ${p.harga}`}</option>
+                    ))}
                   </select>
                 </label>
                 <label className="block">
