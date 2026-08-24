@@ -541,7 +541,7 @@ function PaketSection() {
           </h2>
         </div>
 
-        <div className="grid gap-px bg-border md:grid-cols-3">
+        <div className="grid gap-px border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
           {paket.map((p, i) => (
             <Reveal key={p.nama} delay={i * 0.1}>
               <div
