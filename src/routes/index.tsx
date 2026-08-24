@@ -1140,6 +1140,16 @@ function Footer() {
                 <Instagram className="h-4 w-4" />
               </a>
               <a
+                href="https://tiktok.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`TikTok ${BRAND}`}
+                className="grid h-9 w-9 place-items-center rounded-full border border-background/25 transition-colors hover:bg-background hover:text-foreground"
+              >
+                <TikTokIcon className="h-4 w-4" />
+              </a>
+
+              <a
                 href={WA}
                 target="_blank"
                 rel="noopener noreferrer"
