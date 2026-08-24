@@ -543,15 +543,15 @@ function PaketSection() {
 
         <div className="grid gap-px border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
           {paket.map((p, i) => (
-            <Reveal key={p.nama} delay={i * 0.1}>
+            <Reveal key={p.nama} delay={i * 0.1} className="h-full">
               <div
-                className={`flex h-full flex-col p-7 transition-colors duration-500 md:p-9 ${
+                className={`flex h-full flex-col p-6 transition-colors duration-500 md:p-7 lg:p-9 ${
                   p.unggulan ? "bg-foreground text-background" : "bg-background hover:bg-secondary"
                 }`}
               >
-                <div className="flex items-start justify-between gap-3">
+                <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3">
                   <div className="min-w-0">
-                    <h3 className="display text-2xl">{p.nama}</h3>
+                    <h3 className="display text-xl md:text-2xl">{p.nama}</h3>
                     <p
                       className={`mt-1 text-[10px] tracking-[0.16em] uppercase ${p.unggulan ? "text-background/60" : "text-muted-foreground"}`}
                     >
@@ -564,13 +564,13 @@ function PaketSection() {
                     </span>
                   )}
                 </div>
-                <p className="display mt-8 text-5xl md:text-6xl">{p.harga}</p>
+                <p className="display mt-7 text-4xl md:text-[2.6rem] lg:text-6xl">{p.harga}</p>
                 <p
-                  className={`mt-2 text-xs tracking-[0.14em] uppercase ${p.unggulan ? "text-background/60" : "text-muted-foreground"}`}
+                  className={`mt-2 text-[11px] tracking-[0.14em] uppercase ${p.unggulan ? "text-background/60" : "text-muted-foreground"}`}
                 >
                   {p.orang} · {p.durasi}
                 </p>
-                <ul className="mt-8 space-y-3 text-sm">
+                <ul className="mt-7 flex-1 space-y-3 text-sm">
                   {p.fitur.map((f) => (
                     <li
                       key={f}
@@ -579,13 +579,13 @@ function PaketSection() {
                       <span className={p.unggulan ? "text-background/40" : "text-muted-foreground"}>
                         —
                       </span>
-                      <span className="min-w-0">{f}</span>
+                      <span className="min-w-0 leading-relaxed">{f}</span>
                     </li>
                   ))}
                 </ul>
                 <a
                   href="#booking"
-                  className={`mt-9 inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-[11px] font-medium tracking-[0.16em] uppercase transition-transform duration-300 hover:scale-[1.02] ${
+                  className={`mt-8 inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-[11px] font-medium tracking-[0.16em] uppercase transition-transform duration-300 hover:scale-[1.02] ${
                     p.unggulan ? "bg-background text-foreground" : "bg-foreground text-background"
                   }`}
                 >
@@ -595,6 +595,7 @@ function PaketSection() {
               </div>
             </Reveal>
           ))}
+
         </div>
 
         <div className="mt-14 grid gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:gap-16">
