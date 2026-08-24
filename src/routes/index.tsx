@@ -646,11 +646,12 @@ function PaketSection() {
 }
 
 const galeri = [
-  { src: gal4Img, cat: "Wisuda", span: "lg:col-span-5 lg:row-span-2", ratio: "aspect-[4/5]" },
-  { src: gal2Img, cat: "Couple", span: "lg:col-span-4", ratio: "aspect-[4/5]" },
-  { src: gal1Img, cat: "Solo", span: "lg:col-span-3", ratio: "aspect-[3/4]" },
-  { src: gal5Img, cat: "Family", span: "lg:col-span-3", ratio: "aspect-[3/4]" },
-  { src: gal3Img, cat: "Sahabat", span: "lg:col-span-4", ratio: "aspect-[4/5]" },
+  { src: gal4Img, cat: "Wisuda" },
+  { src: gal2Img, cat: "Couple" },
+  { src: gal1Img, cat: "Solo" },
+  { src: gal5Img, cat: "Family" },
+  { src: gal3Img, cat: "Sahabat" },
+  { src: gal6Img, cat: "Personal Branding" },
 ];
 
 function Galeri() {
@@ -663,19 +664,21 @@ function Galeri() {
             <TextReveal text="sesi" italicWords={["sesi"]} delay={0.1} />
           </h2>
           <p className="text-[10px] tracking-[0.2em] text-muted-foreground uppercase">
-            Wisuda · Couple · Solo · Family · Sahabat
+            Wisuda · Couple · Solo · Family · Sahabat · Branding
           </p>
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-12">
+        <div className="grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
           {galeri.map((g, i) => (
-            <Reveal key={i} delay={(i % 3) * 0.08} className={g.span}>
+            <Reveal key={i} delay={(i % 3) * 0.08} className="h-full">
               <figure className="group relative h-full overflow-hidden">
-                <div className={`grain ${g.ratio} h-full overflow-hidden bg-muted`}>
+                <div className="grain aspect-[4/5] h-full overflow-hidden bg-muted">
                   <img
                     src={g.src}
                     alt={`Hasil foto kategori ${g.cat}`}
                     loading="lazy"
+                    width={1152}
+                    height={1440}
                     className="h-full w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-105"
                   />
                 </div>
@@ -686,6 +689,7 @@ function Galeri() {
             </Reveal>
           ))}
         </div>
+
       </div>
     </section>
   );
