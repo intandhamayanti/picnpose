@@ -28,6 +28,8 @@ import gal2Img from "@/assets/gal-2.jpg";
 import gal3Img from "@/assets/gal-3.jpg";
 import gal4Img from "@/assets/gal-4.jpg";
 import gal5Img from "@/assets/gal-5.jpg";
+import gal6Img from "@/assets/gal-6.jpg";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
