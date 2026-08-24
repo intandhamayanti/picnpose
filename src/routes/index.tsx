@@ -28,6 +28,8 @@ import gal2Img from "@/assets/gal-2.jpg";
 import gal3Img from "@/assets/gal-3.jpg";
 import gal4Img from "@/assets/gal-4.jpg";
 import gal5Img from "@/assets/gal-5.jpg";
+import gal6Img from "@/assets/gal-6.jpg";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -53,6 +55,15 @@ export const Route = createFileRoute("/")({
 
 const WA = "https://wa.me/6281234567890";
 const BRAND = "Pic n Pose Studio";
+
+function TikTokIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden className={className}>
+      <path d="M16.5 3c.32 2.29 1.7 3.7 3.94 3.85v2.6c-1.3.13-2.44-.3-3.76-1.1v4.86c0 6.18-6.74 8.1-9.45 3.67-1.74-2.85-.67-7.86 4.92-8.06v2.74c-.43.07-.88.18-1.3.32-1.24.42-1.94 1.2-1.74 2.59.37 2.65 5.24 3.44 4.83-1.74V3.01h2.56Z" />
+    </svg>
+  );
+}
+
 
 const nav = [
   { label: "Kenapa Di Sini", href: "#kenapa" },
@@ -297,19 +308,24 @@ function Header() {
 
 function Hero() {
   return (
-    <section id="top" className="relative overflow-hidden pt-20 md:pt-28">
+    <section id="top" className="relative overflow-hidden pt-24 pb-14 md:pt-32 md:pb-20">
       <div className="mx-auto max-w-[1400px] px-5 md:px-10">
-        <div className="grid items-end gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:gap-12">
-          <div className="pt-4 pb-2 md:pt-6">
-            <h1 className="display text-[15vw] leading-[0.92] sm:text-[10vw] lg:text-[7vw]">
-              <TextReveal text="Cerita kamu," />
+        <div className="grid items-center gap-10 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
+          <div className="order-2 lg:order-1">
+            <Reveal delay={0.05}>
+              <p className="mb-5 text-[10px] tracking-[0.24em] text-muted-foreground uppercase md:mb-7">
+                Self Photo Studio · Surabaya
+              </p>
+            </Reveal>
+            <h1 className="display text-[14vw] leading-[0.95] sm:text-[9.5vw] lg:text-[6.4vw]">
+              <TextReveal text="Bebas berekspresi," />
               <br />
-              <TextReveal text="ditangkap sendiri." italicWords={["sendiri."]} delay={0.2} />
+              <TextReveal text="tanpa penonton." italicWords={["penonton."]} delay={0.2} />
             </h1>
             <Reveal delay={0.35}>
               <p className="mt-6 max-w-md text-sm leading-relaxed text-muted-foreground md:mt-7 md:text-base">
-                Self photo studio di Surabaya. Ruangan private, remote di tangan kamu, dan 20 menit
-                penuh untuk jadi versi paling kamu — tanpa ada orang lain yang mengarahkan.
+                Ruangan private, lighting siap pakai, remote di tangan kamu. Dua puluh menit penuh
+                untuk jadi versi paling kamu — tanpa ada yang mengarahkan.
               </p>
             </Reveal>
             <Reveal delay={0.45}>
@@ -330,7 +346,7 @@ function Hero() {
               </div>
             </Reveal>
             <Reveal delay={0.55}>
-              <dl className="mt-10 grid grid-cols-3 gap-4 border-t border-border pt-6">
+              <dl className="mt-9 grid grid-cols-3 gap-4 border-t border-border pt-6">
                 {[
                   ["20", "menit / sesi"],
                   ["9", "background pilihan"],
@@ -351,16 +367,16 @@ function Hero() {
             initial={{ opacity: 0, scale: 1.06 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 1.4, ease: [0.16, 1, 0.3, 1] }}
-            className="grain relative aspect-[4/5] w-full overflow-hidden bg-muted lg:aspect-[3/4]"
+            className="grain relative order-1 aspect-[4/3] w-full overflow-hidden bg-muted sm:aspect-[3/2] lg:order-2 lg:aspect-[4/5]"
           >
             <img
               src={heroImg}
               alt="Potret editorial berwarna di self photo studio Surabaya"
               width={1152}
               height={1472}
-              className="h-full w-full object-cover"
+              className="h-full w-full object-cover object-top"
             />
-            <div className="absolute inset-x-0 bottom-0 flex items-end justify-between p-5 text-[10px] tracking-[0.18em] text-white/85 uppercase">
+            <div className="absolute inset-x-0 bottom-0 flex items-end justify-between bg-gradient-to-t from-black/45 to-transparent p-5 text-[10px] tracking-[0.18em] text-white/85 uppercase">
               <span>No. 01 / {BRAND}</span>
               <span>Surabaya</span>
             </div>
@@ -370,6 +386,7 @@ function Hero() {
     </section>
   );
 }
+
 
 function Statement() {
   return (
@@ -408,9 +425,9 @@ function Kenapa() {
   return (
     <section id="kenapa" className="py-20 md:py-32">
       <div className="mx-auto max-w-[1400px] px-5 md:px-10">
-        <div className="grid gap-14 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
+        <div className="grid items-end gap-8 lg:grid-cols-[1fr_auto] lg:gap-16">
           <div>
-            <p className="mb-8 text-[10px] tracking-[0.24em] text-muted-foreground uppercase">
+            <p className="mb-6 text-[10px] tracking-[0.24em] text-muted-foreground uppercase">
               (Kenapa di sini)
             </p>
             <h2 className="display text-[12vw] leading-[0.98] sm:text-[8vw] lg:text-[4.8vw]">
@@ -418,42 +435,50 @@ function Kenapa() {
               <br />
               <TextReveal text="terasa berbeda." italicWords={["berbeda."]} delay={0.1} />
             </h2>
-            <Parallax className="mt-10 hidden overflow-hidden lg:block" distance={40}>
-              <div className="grain aspect-[7/5] overflow-hidden bg-muted">
-                <img
-                  src={studioImg}
-                  alt="Interior private room self photo studio dengan lighting"
-                  loading="lazy"
-                  width={1408}
-                  height={1024}
-                  className="h-[115%] w-full object-cover"
-                />
-              </div>
-            </Parallax>
           </div>
+          <Reveal delay={0.2}>
+            <p className="max-w-sm text-sm leading-relaxed text-muted-foreground">
+              Semua detail kecil sudah kami siapkan, supaya kamu tinggal masuk, menekan remote, dan
+              menikmati sesinya.
+            </p>
+          </Reveal>
+        </div>
 
-          <ul className="divide-y divide-border border-y border-border">
-            {alasan.map((a, i) => (
-              <Reveal key={a.t} delay={i * 0.06}>
-                <li className="group grid grid-cols-[auto_minmax(0,1fr)] items-start gap-5 py-7 transition-colors duration-500 md:grid-cols-[auto_0.8fr_1.2fr] md:items-center">
-                  <span className="text-[10px] tracking-[0.2em] text-muted-foreground tabular-nums">
-                    0{i + 1}
-                  </span>
+        <Parallax className="mt-12 hidden overflow-hidden lg:block" distance={40}>
+          <div className="grain aspect-[21/8] overflow-hidden bg-muted">
+            <img
+              src={studioImg}
+              alt="Interior private room self photo studio dengan lighting"
+              loading="lazy"
+              width={1408}
+              height={1024}
+              className="h-[115%] w-full object-cover"
+            />
+          </div>
+        </Parallax>
+
+        <ul className="mt-12 grid gap-px border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
+          {alasan.map((a, i) => (
+            <Reveal key={a.t} delay={(i % 3) * 0.08} className="h-full">
+              <li className="group flex h-full min-h-[15rem] flex-col bg-background p-7 transition-colors duration-500 hover:bg-secondary md:min-h-[16rem] md:p-9">
+                <span className="text-[10px] tracking-[0.2em] text-muted-foreground tabular-nums">
+                  0{i + 1}
+                </span>
+                <div className="mt-auto pt-10">
                   <h3 className="display text-2xl transition-transform duration-500 group-hover:translate-x-1 md:text-3xl">
                     {a.t}
                   </h3>
-                  <p className="col-start-2 text-sm leading-relaxed text-muted-foreground md:col-start-3">
-                    {a.d}
-                  </p>
-                </li>
-              </Reveal>
-            ))}
-          </ul>
-        </div>
+                  <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{a.d}</p>
+                </div>
+              </li>
+            </Reveal>
+          ))}
+        </ul>
       </div>
     </section>
   );
 }
+
 
 function JenisSesi() {
   return (
@@ -527,17 +552,17 @@ function PaketSection() {
           </h2>
         </div>
 
-        <div className="grid gap-px bg-border md:grid-cols-3">
+        <div className="grid gap-px border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
           {paket.map((p, i) => (
-            <Reveal key={p.nama} delay={i * 0.1}>
+            <Reveal key={p.nama} delay={i * 0.1} className="h-full">
               <div
-                className={`flex h-full flex-col p-7 transition-colors duration-500 md:p-9 ${
+                className={`flex h-full flex-col p-6 transition-colors duration-500 md:p-7 lg:p-9 ${
                   p.unggulan ? "bg-foreground text-background" : "bg-background hover:bg-secondary"
                 }`}
               >
-                <div className="flex items-start justify-between gap-3">
+                <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-3">
                   <div className="min-w-0">
-                    <h3 className="display text-2xl">{p.nama}</h3>
+                    <h3 className="display text-xl md:text-2xl">{p.nama}</h3>
                     <p
                       className={`mt-1 text-[10px] tracking-[0.16em] uppercase ${p.unggulan ? "text-background/60" : "text-muted-foreground"}`}
                     >
@@ -550,13 +575,13 @@ function PaketSection() {
                     </span>
                   )}
                 </div>
-                <p className="display mt-8 text-5xl md:text-6xl">{p.harga}</p>
+                <p className="display mt-7 text-4xl md:text-[2.6rem] lg:text-6xl">{p.harga}</p>
                 <p
-                  className={`mt-2 text-xs tracking-[0.14em] uppercase ${p.unggulan ? "text-background/60" : "text-muted-foreground"}`}
+                  className={`mt-2 text-[11px] tracking-[0.14em] uppercase ${p.unggulan ? "text-background/60" : "text-muted-foreground"}`}
                 >
                   {p.orang} · {p.durasi}
                 </p>
-                <ul className="mt-8 space-y-3 text-sm">
+                <ul className="mt-7 flex-1 space-y-3 text-sm">
                   {p.fitur.map((f) => (
                     <li
                       key={f}
@@ -565,13 +590,13 @@ function PaketSection() {
                       <span className={p.unggulan ? "text-background/40" : "text-muted-foreground"}>
                         —
                       </span>
-                      <span className="min-w-0">{f}</span>
+                      <span className="min-w-0 leading-relaxed">{f}</span>
                     </li>
                   ))}
                 </ul>
                 <a
                   href="#booking"
-                  className={`mt-9 inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-[11px] font-medium tracking-[0.16em] uppercase transition-transform duration-300 hover:scale-[1.02] ${
+                  className={`mt-8 inline-flex items-center justify-center gap-2 rounded-full px-6 py-3.5 text-[11px] font-medium tracking-[0.16em] uppercase transition-transform duration-300 hover:scale-[1.02] ${
                     p.unggulan ? "bg-background text-foreground" : "bg-foreground text-background"
                   }`}
                 >
@@ -581,6 +606,7 @@ function PaketSection() {
               </div>
             </Reveal>
           ))}
+
         </div>
 
         <div className="mt-14 grid gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:gap-16">
@@ -631,11 +657,12 @@ function PaketSection() {
 }
 
 const galeri = [
-  { src: gal4Img, cat: "Wisuda", span: "lg:col-span-5 lg:row-span-2", ratio: "aspect-[4/5]" },
-  { src: gal2Img, cat: "Couple", span: "lg:col-span-4", ratio: "aspect-[4/5]" },
-  { src: gal1Img, cat: "Solo", span: "lg:col-span-3", ratio: "aspect-[3/4]" },
-  { src: gal5Img, cat: "Family", span: "lg:col-span-3", ratio: "aspect-[3/4]" },
-  { src: gal3Img, cat: "Sahabat", span: "lg:col-span-4", ratio: "aspect-[4/5]" },
+  { src: gal4Img, cat: "Wisuda" },
+  { src: gal2Img, cat: "Couple" },
+  { src: gal1Img, cat: "Solo" },
+  { src: gal5Img, cat: "Family" },
+  { src: gal3Img, cat: "Sahabat" },
+  { src: gal6Img, cat: "Personal Branding" },
 ];
 
 function Galeri() {
@@ -648,19 +675,21 @@ function Galeri() {
             <TextReveal text="sesi" italicWords={["sesi"]} delay={0.1} />
           </h2>
           <p className="text-[10px] tracking-[0.2em] text-muted-foreground uppercase">
-            Wisuda · Couple · Solo · Family · Sahabat
+            Wisuda · Couple · Solo · Family · Sahabat · Branding
           </p>
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-12">
+        <div className="grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
           {galeri.map((g, i) => (
-            <Reveal key={i} delay={(i % 3) * 0.08} className={g.span}>
+            <Reveal key={i} delay={(i % 3) * 0.08} className="h-full">
               <figure className="group relative h-full overflow-hidden">
-                <div className={`grain ${g.ratio} h-full overflow-hidden bg-muted`}>
+                <div className="grain aspect-[4/5] h-full overflow-hidden bg-muted">
                   <img
                     src={g.src}
                     alt={`Hasil foto kategori ${g.cat}`}
                     loading="lazy"
+                    width={1152}
+                    height={1440}
                     className="h-full w-full object-cover transition-transform duration-[1400ms] ease-out group-hover:scale-105"
                   />
                 </div>
@@ -671,6 +700,7 @@ function Galeri() {
             </Reveal>
           ))}
         </div>
+
       </div>
     </section>
   );
@@ -828,6 +858,33 @@ function buildSlots() {
   return out;
 }
 const SLOTS = buildSlots();
+
+const SESI_GROUP = [
+  { label: "Pagi", range: [10, 13] as const },
+  { label: "Siang", range: [13, 17] as const },
+  { label: "Malam", range: [17, 21] as const },
+];
+
+const slotHour = (s: string) => Number(s.split(".")[0]);
+const slotMinutes = (s: string) => {
+  const [h, m] = s.split(".");
+  return Number(h) * 60 + Number(m);
+};
+
+const isSameDay = (a: Date, b: Date) => a.toDateString() === b.toDateString();
+const isWeekend = (d: Date) => [0, 5, 6].includes(d.getDay()); // Jumat–Minggu
+
+/** Slot terisi (simulasi jadwal studio, konsisten per tanggal). */
+function bookedSlots(d: Date) {
+  const seed = d.getFullYear() * 10000 + (d.getMonth() + 1) * 100 + d.getDate();
+  const set = new Set<string>();
+  SLOTS.forEach((s, i) => {
+    const n = (seed * 9301 + (i + 1) * 49297) % 233280;
+    if (n / 233280 < (isWeekend(d) ? 0.42 : 0.22)) set.add(s);
+  });
+  return set;
+}
+
 
 function Booking() {
   const today = useMemo(() => {
@@ -1118,6 +1175,16 @@ function Footer() {
               >
                 <Instagram className="h-4 w-4" />
               </a>
+              <a
+                href="https://tiktok.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`TikTok ${BRAND}`}
+                className="grid h-9 w-9 place-items-center rounded-full border border-background/25 transition-colors hover:bg-background hover:text-foreground"
+              >
+                <TikTokIcon className="h-4 w-4" />
+              </a>
+
               <a
                 href={WA}
                 target="_blank"
