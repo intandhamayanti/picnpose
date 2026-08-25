@@ -47,7 +47,42 @@ export const Route = createFileRoute("/")({
           "Foto sendiri di private studio Surabaya. Sesi 20 menit, hasil premium, mulai Rp89.000.",
       },
       { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://picnpose.lovable.app/" },
       { name: "twitter:card", content: "summary_large_image" },
+    ],
+    links: [{ rel: "canonical", href: "https://picnpose.lovable.app/" }],
+    scripts: [
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "LocalBusiness",
+          name: "Pic n Pose Studio",
+          description:
+            "Self photo studio di Surabaya dengan private room, lighting estetik, dan sesi 20 menit.",
+          url: "https://picnpose.lovable.app/",
+          image: "https://picnpose.lovable.app/favicon.png",
+          address: {
+            "@type": "PostalAddress",
+            addressLocality: "Surabaya",
+            addressRegion: "Jawa Timur",
+            addressCountry: "ID",
+          },
+          priceRange: "Rp89.000 - Rp179.000",
+        }),
+      },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          mainEntity: faq.map((f) => ({
+            "@type": "Question",
+            name: f.q,
+            acceptedAnswer: { "@type": "Answer", text: f.a },
+          })),
+        }),
+      },
     ],
   }),
   component: Index,
